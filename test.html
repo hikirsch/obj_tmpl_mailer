@@ -1,0 +1,72 @@
+<!doctype html>
+
+<html>
+	<head>
+		<title>Template Email Test</title>
+		<script src="//code.jquery.com/jquery-2.1.1.min.js"></script>
+	</head>
+
+	<body>
+		<h4>Ajax Test</h4>
+		<input type="button" id="send-email-button" value="ReRun" />
+		<ul id="response"></ul>
+
+		<hr />
+		<h4>Form Test</h4>
+
+		<form id="someId" action="no_ajax.php" method="POST" enctype="multipart/form-data">
+			<input type="hidden" name="full_submit" value="true" />
+
+			<p>
+				<label for="first-name">Name</label>
+				<input type="text" id="first-name" name="first-name" value="Form Test" />
+			</p>
+
+			<p>
+				<label for="email">Email</label> <input type="text" id="email" name="email" value="form@test.com" />
+			</p>
+
+			<p>
+				<input type="file" name="file1" />
+			</p>
+
+			<p>
+				<input type="file" name="file2" />
+			</p>
+
+			<p>
+				<input type="file" name="file3" />
+			</p>
+
+			<input type="submit" value="Submit" />
+		</form>
+
+
+		<script>
+			(function ajax_test() {
+				var tmplData = {
+					"subscribe-email": "test@gmail.com"
+				};
+
+				$( "#send-email-button" ).on( 'click', function () {
+					$.ajax( {
+						type: "POST",
+						url: "ajax.php",
+						contentType: "application/json",
+						data: JSON.stringify( {
+							"formData": tmplData
+						} ),
+						success: function ( payload ) {
+							if( payload.success ) {
+								$( "#response" ).append( "<li>" + payload.data.message + "</li>" );
+							} else {
+								$( "#response" ).append( "<li>ERROR!!!!!!!!! " + payload.data.message + "</li>" );
+							}
+						}
+					} );
+				} );
+			})
+			();
+		</script>
+	</body>
+</html>
